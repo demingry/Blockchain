@@ -30,6 +30,18 @@ func (p *ProofofWork)PrepareData(nounce int) []byte {
 }
 
 
+//验证区块hash方法
+func (p *ProofofWork) IsValid(b Block) bool {
+
+	var hashInt big.Int
+	hashInt.SetBytes(p.Block.Hash)
+
+	if p.target.Cmp(&hashInt)==1 {
+		return true
+	}
+	return false
+}
+
 //遍历穷举直到计算hash的值小于target
 func (p *ProofofWork)Run() ([]byte,int64) {
 	var hashInt big.Int
