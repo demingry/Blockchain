@@ -12,7 +12,7 @@ type ProofofWork struct {
 	target *big.Int //大数据存储
 }
 
-const targetBit = 20
+const targetBit = 16
 
 //拼接数据字符数组
 func (p *ProofofWork)PrepareData(nounce int) []byte {
@@ -31,7 +31,7 @@ func (p *ProofofWork)PrepareData(nounce int) []byte {
 
 
 //验证区块hash方法
-func (p *ProofofWork) IsValid(b Block) bool {
+func (p *ProofofWork) IsValid() bool {
 
 	var hashInt big.Int
 	hashInt.SetBytes(p.Block.Hash)
