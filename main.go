@@ -8,10 +8,14 @@ package main
 
 import (
 	"blockchain/BLC"
+	"fmt"
 )
 
 func main()  {
 	Blockchain := BLC.CreateBlockchainWithGenesisBlock()
+	Blockchain.AddBlockToBlockChain("send $100 to Zhang")
+	Blockchain.AddBlockToBlockChain("send $100 to Ge")
 	defer Blockchain.DB.Close()
-	//Blockchain.AddNewBlockToChain("Send 100RMB to Zhang",Blockchain.Blocks[len(Blockchain.Blocks)-1].Height + 1,Blockchain.Blocks[len(Blockchain.Blocks)-1].Hash)
+	Blockchain.PrintChain()
+	fmt.Scanf("this")
 }
