@@ -13,8 +13,9 @@ import (
 
 func main()  {
 	Blockchain := BLC.CreateBlockchainWithGenesisBlock()
-	Blockchain.AddBlockToBlockChain("send $100 to Zhang")
-	Blockchain.AddBlockToBlockChain("send $100 to Ge")
+	for {
+		Blockchain.AddBlockToBlockChain(BLC.CreateRandomString(6))
+	}
 	defer Blockchain.DB.Close()
 	Blockchain.PrintChain()
 	fmt.Scanf("this")

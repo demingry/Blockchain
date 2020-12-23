@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"math/big"
+	"os"
 )
 
 const (
@@ -33,6 +34,33 @@ func (blc *Blockchain)AddNewBlockToChain(data string,height int64,prevhash []byt
 //创建带有创世区块的区块链
 func CreateBlockchainWithGenesisBlock() *Blockchain {
 
+	if dbExists() {
+		fmt.Println("[!]数据库已存在")
+		db, err := bolt.Open(dbName, 0600, nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+		//defer db.Close()
+		var blockchain *Blockchain
+		//B：读取数据库
+		err = db.View(func(tx *bolt.Tx) error {
+			//C：打开表
+			b := tx.Bucket([]byte(blockTableName))
+			if b != nil {
+				//D：读取最后一个hash
+				hash := b.Get([]byte("l"))
+				//E：创建blockchain
+				blockchain = &Blockchain{hash, db}
+			}
+			return nil
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
+		return blockchain
+	}
+
+	fmt.Println("[!]数据库不存在,将创建创世区块")
 	db,err := bolt.Open(dbName,0600,nil)
 	if err != nil {
 		log.Fatal(err)
@@ -47,8 +75,8 @@ func CreateBlockchainWithGenesisBlock() *Blockchain {
 			log.Panic(err)
 		}
 
-		//数据表不存在时,创建创世区块
-		if b == nil {
+		//数据表被新建,创建创世区块
+		if b != nil {
 
 			genesisBlock := CreateGenesisBlock("genesis block creating...")
 			//将创世区块存储到表中
@@ -129,4 +157,11 @@ func (bc *Blockchain)PrintChain() {
 		currentHash = block.PrevBlockHash //更新需要遍历的区块hash值
 		count++
 	}
+}
+
+func dbExists() bool {
+	if _, err := os.Stat(dbName); os.IsNotExist(err) {
+		return false
+	}
+	return true
 }

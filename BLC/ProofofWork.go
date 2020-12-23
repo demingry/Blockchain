@@ -12,7 +12,7 @@ type ProofofWork struct {
 	target *big.Int //大数据存储
 }
 
-const targetBit = 16
+const targetBit = 20
 
 //拼接数据字符数组
 func (p *ProofofWork)PrepareData(nounce int) []byte {
