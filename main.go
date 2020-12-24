@@ -8,15 +8,11 @@ package main
 
 import (
 	"blockchain/BLC"
-	"fmt"
 )
 
 func main()  {
 	Blockchain := BLC.CreateBlockchainWithGenesisBlock()
-	for {
-		Blockchain.AddBlockToBlockChain(BLC.CreateRandomString(6))
-	}
-	defer Blockchain.DB.Close()
+	Blockchain.AddBlockToBlockChain(BLC.CreateRandomString(6))
 	Blockchain.PrintChain()
-	fmt.Scanf("this")
+	defer Blockchain.DB.Close()
 }

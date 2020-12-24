@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/big"
 	"os"
+	"time"
 )
 
 const (
@@ -18,7 +19,33 @@ type Blockchain struct {
 	DB *bolt.DB
 }
 
+type BlockchainIterator struct {
+	CurrentHash []byte
+	DB *bolt.DB
+}
 
+//创建区块链迭代对象
+func (bc *Blockchain) Iterator() *BlockchainIterator {
+	return &BlockchainIterator{bc.Tip,bc.DB}
+}
+
+//获取区块数据
+func (bci *BlockchainIterator) Next() *Block {
+	var block *Block
+	err := bci.DB.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(blockTableName))
+		if b!= nil{
+			currentBlockbytes := b.Get(bci.CurrentHash)
+			block = DeserializeBlock(currentBlockbytes)
+			bci.CurrentHash = block.PrevBlockHash
+		}
+		return nil
+	})
+	if err != nil{
+		log.Panic(err)
+	}
+	return block
+}
 
 /*
 //将新区快增加到区块链中
@@ -34,6 +61,7 @@ func (blc *Blockchain)AddNewBlockToChain(data string,height int64,prevhash []byt
 //创建带有创世区块的区块链
 func CreateBlockchainWithGenesisBlock() *Blockchain {
 
+	//数据库是否存在
 	if dbExists() {
 		fmt.Println("[!]数据库已存在")
 		db, err := bolt.Open(dbName, 0600, nil)
@@ -42,14 +70,10 @@ func CreateBlockchainWithGenesisBlock() *Blockchain {
 		}
 		//defer db.Close()
 		var blockchain *Blockchain
-		//B：读取数据库
 		err = db.View(func(tx *bolt.Tx) error {
-			//C：打开表
 			b := tx.Bucket([]byte(blockTableName))
 			if b != nil {
-				//D：读取最后一个hash
 				hash := b.Get([]byte("l"))
-				//E：创建blockchain
 				blockchain = &Blockchain{hash, db}
 			}
 			return nil
@@ -123,39 +147,23 @@ func (bc *Blockchain)AddBlockToBlockChain(data string)  {
 }
 
 func (bc *Blockchain)PrintChain() {
-	var currentHash = bc.Tip //需要遍历的当前hash值
-	var block *Block //需要遍历的当前的区块
-	var count = 0
-	for {
-		err := bc.DB.View(func(tx *bolt.Tx) error {
-			b := tx.Bucket([]byte(blockTableName))
 
-			if b != nil {
-				blockBytes := b.Get(currentHash)
-				block = DeserializeBlock(blockBytes) //获取响应hash的区块字节数组数据
-				fmt.Printf("Current: %d\n",count)
-				fmt.Printf("Height: %d\n",block.Height)
-				fmt.Printf("PrevBlockHash: %x\n",block.PrevBlockHash)
-				fmt.Printf("Data: %s\n",block.Data)
-				fmt.Printf("Timestamp: %d\n",block.Timestamp)
-				fmt.Printf("Hash: %x\n",block.Hash)
-				fmt.Printf("Nonce: %d\n",block.Nonce)
-			}
-			return nil
-		})
-		if err != nil {
-			log.Panic(err)
-		}
+	blockchainIterator := bc.Iterator()
+	for  {
+		block := blockchainIterator.Next()
 
-		var hashInt big.Int
-		hashInt.SetBytes(block.PrevBlockHash)
+		fmt.Printf("Height: %d\n",block.Height)
+		fmt.Printf("PrevBlockHash: %x\n",block.PrevBlockHash)
+		fmt.Printf("Data: %s\n",block.Data)
+		fmt.Printf("Timestamp: %s\n",time.Unix(block.Timestamp,0).Format("2006-01-02 03:04:05 PM"))
+		fmt.Printf("Hash: %x\n",block.Hash)
+		fmt.Printf("Nonce: %d\n",block.Nonce)
 
-		//如果此区块的前一个区块的hash为0，则是创世区块
-		if big.NewInt(0).Cmp(&hashInt)==0 {
+		var hahsInt big.Int
+		hahsInt.SetBytes(block.PrevBlockHash)
+		if big.NewInt(0).Cmp(&hahsInt) ==0 {
 			break
 		}
-		currentHash = block.PrevBlockHash //更新需要遍历的区块hash值
-		count++
 	}
 }
 
