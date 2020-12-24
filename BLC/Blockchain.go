@@ -19,33 +19,7 @@ type Blockchain struct {
 	DB *bolt.DB
 }
 
-type BlockchainIterator struct {
-	CurrentHash []byte
-	DB *bolt.DB
-}
 
-//创建区块链迭代对象
-func (bc *Blockchain) Iterator() *BlockchainIterator {
-	return &BlockchainIterator{bc.Tip,bc.DB}
-}
-
-//获取区块数据
-func (bci *BlockchainIterator) Next() *Block {
-	var block *Block
-	err := bci.DB.View(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte(blockTableName))
-		if b!= nil{
-			currentBlockbytes := b.Get(bci.CurrentHash)
-			block = DeserializeBlock(currentBlockbytes)
-			bci.CurrentHash = block.PrevBlockHash
-		}
-		return nil
-	})
-	if err != nil{
-		log.Panic(err)
-	}
-	return block
-}
 
 /*
 //将新区快增加到区块链中
@@ -58,30 +32,15 @@ func (blc *Blockchain)AddNewBlockToChain(data string,height int64,prevhash []byt
 */
 
 
-//创建带有创世区块的区块链
-func CreateBlockchainWithGenesisBlock() *Blockchain {
+/*
+	创建带有创世区块的区块链
+*/
+func CreateBlockchainWithGenesisBlock() {
 
 	//数据库是否存在
 	if dbExists() {
-		fmt.Println("[!]数据库已存在")
-		db, err := bolt.Open(dbName, 0600, nil)
-		if err != nil {
-			log.Fatal(err)
-		}
-		//defer db.Close()
-		var blockchain *Blockchain
-		err = db.View(func(tx *bolt.Tx) error {
-			b := tx.Bucket([]byte(blockTableName))
-			if b != nil {
-				hash := b.Get([]byte("l"))
-				blockchain = &Blockchain{hash, db}
-			}
-			return nil
-		})
-		if err != nil {
-			log.Fatal(err)
-		}
-		return blockchain
+		fmt.Println("数据库已存在")
+		return
 	}
 
 	fmt.Println("[!]数据库不存在,将创建创世区块")
@@ -89,8 +48,6 @@ func CreateBlockchainWithGenesisBlock() *Blockchain {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	var blockhash []byte
 
 	err = db.Update(func(tx *bolt.Tx) error {
 
@@ -109,19 +66,21 @@ func CreateBlockchainWithGenesisBlock() *Blockchain {
 				log.Panic(err)
 			}
 
-			blockhash = genesisBlock.Hash
-
 			//存储最新的区块的hash
 			err = b.Put([]byte("l"),genesisBlock.Hash)
 			if err != nil {
 				log.Panic(err)
 			}
+			defer db.Close()
 		}
 		return nil
 	})
-	return &Blockchain{blockhash,db}
 }
 
+
+/*
+	增加新区块到区块链
+*/
 func (bc *Blockchain)AddBlockToBlockChain(data string)  {
 	err := bc.DB.Update(func(tx *bolt.Tx) error {
 		//获取数据表
@@ -136,7 +95,7 @@ func (bc *Blockchain)AddBlockToBlockChain(data string)  {
 			if err != nil {
 				log.Panic(err)
 			}
-			b.Put([]byte("l"),newBlock.Hash) //把头索引值的hash改为新建的块hash
+			_ = b.Put([]byte("l"),newBlock.Hash) //把头索引值的hash改为新建的块hash
 			bc.Tip = newBlock.Hash
 		}
 		return nil
@@ -146,6 +105,10 @@ func (bc *Blockchain)AddBlockToBlockChain(data string)  {
 	}
 }
 
+
+/*
+	打印区块链
+*/
 func (bc *Blockchain)PrintChain() {
 
 	blockchainIterator := bc.Iterator()
@@ -167,9 +130,43 @@ func (bc *Blockchain)PrintChain() {
 	}
 }
 
+/*
+	判断数据库是否存在
+*/
 func dbExists() bool {
 	if _, err := os.Stat(dbName); os.IsNotExist(err) {
 		return false
 	}
 	return true
+}
+
+
+/*
+	获取区块对象
+*/
+func GetBlockchainObject() *Blockchain {
+
+	if !dbExists() {
+		fmt.Println("数据库不存在，无法获取区块链")
+		return nil
+	}
+
+	db, err := bolt.Open(dbName, 0600, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var blockchain *Blockchain
+	err = db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(blockTableName))
+		if b != nil {
+			hash := b.Get([]byte("l"))
+			blockchain = &Blockchain{hash, db}
+		}
+		return nil
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	return blockchain
 }

@@ -6,13 +6,9 @@
 
 package main
 
-import (
-	"blockchain/BLC"
-)
+import "blockchain/BLC"
 
 func main()  {
-	Blockchain := BLC.CreateBlockchainWithGenesisBlock()
-	Blockchain.AddBlockToBlockChain(BLC.CreateRandomString(6))
-	Blockchain.PrintChain()
-	defer Blockchain.DB.Close()
+	cli := BLC.CLI{}
+	cli.Run()
 }

@@ -8,6 +8,9 @@ import (
 	"math/big"
 )
 
+/*
+	转化为字节数组
+*/
 func IntToHex(num int64) []byte {
 	buff := new(bytes.Buffer)
 	err := binary.Write(buff,binary.BigEndian,num)
@@ -17,6 +20,9 @@ func IntToHex(num int64) []byte {
 	return buff.Bytes()
 }
 
+/*
+	随机生成字符串
+*/
 func CreateRandomString(len int) string  {
 	var container string
 	var str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"

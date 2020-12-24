@@ -12,9 +12,11 @@ type ProofofWork struct {
 	target *big.Int //大数据存储
 }
 
-const targetBit = 20
+const targetBit = 20 //计算难度
 
-//拼接数据字符数组
+/*
+	拼接数据字符数组
+*/
 func (p *ProofofWork)PrepareData(nounce int) []byte {
 	data := bytes.Join(
 		[][]byte{
@@ -30,7 +32,9 @@ func (p *ProofofWork)PrepareData(nounce int) []byte {
 }
 
 
-//验证区块hash方法
+/*
+	验证区块hash方法
+*/
 func (p *ProofofWork) IsValid() bool {
 
 	var hashInt big.Int
@@ -42,7 +46,9 @@ func (p *ProofofWork) IsValid() bool {
 	return false
 }
 
-//遍历穷举直到计算hash的值小于target
+/*
+	遍历穷举直到计算hash的值小于target
+*/
 func (p *ProofofWork)Run() ([]byte,int64) {
 	var hashInt big.Int
 	var hash [32]byte
@@ -64,6 +70,9 @@ func (p *ProofofWork)Run() ([]byte,int64) {
 	return hash[:],int64(nouce)
 }
 
+/*
+	创建工作量证明对象
+*/
 func NewProofofWork(b *Block) *ProofofWork {
 	target := big.NewInt(1)
 	target = target.Lsh(target,uint(256-targetBit))

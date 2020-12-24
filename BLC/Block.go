@@ -40,26 +40,35 @@ func (b *Block)SetHash()  {
 }
 */
 
+/*
+	创建创世区块
+*/
 func CreateGenesisBlock(data string) *Block {
 	return NewBlock(data,1,[]byte{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0})
 }
 
+
+/*
+	新建区块
+*/
 func NewBlock(data string,height int64,prevblockhash []byte) *Block {
 	block := &Block{height,prevblockhash,[]byte(data),time.Now().Unix(),nil,0}
-	/*block.SetHash()*/
+	//block.SetHash()
 
 	//创建工作量证明对象
 	pow := NewProofofWork(block)
 	//穷举直到正确hash被计算出来
 	hash,nonce := pow.Run()
 
-	/*设置运行出来的hash和穷举数nonce*/
+	//设置运行出来的hash和穷举数nonce
 	block.Hash = hash
 	block.Nonce = nonce
 	return block
 }
 
-//序列化函数
+/*
+	序列化函数
+*/
 func (b *Block) Serialize() []byte {
 	var result bytes.Buffer
 	encoder := gob.NewEncoder(&result)
@@ -71,7 +80,9 @@ func (b *Block) Serialize() []byte {
 }
 
 
-//反序列化函数
+/*
+	反序列化函数
+*/
 func DeserializeBlock(blockBytes []byte) *Block {
 	var block Block
 	decoder := gob.NewDecoder(bytes.NewReader(blockBytes))
