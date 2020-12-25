@@ -12,8 +12,8 @@ type Block struct {
 	Height int64
 	//上一个区块Hash
 	PrevBlockHash []byte
-	//交易数据
-	Data []byte
+	//交易数据，一个transaction代表一次交易，结构体数组表示区块链中多个transaction交易
+	TX []*Transaction
 	//时间戳
 	Timestamp int64
 	//Hash
@@ -43,16 +43,16 @@ func (b *Block)SetHash()  {
 /*
 	创建创世区块
 */
-func CreateGenesisBlock(data string) *Block {
-	return NewBlock(data,1,[]byte{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0})
+func CreateGenesisBlock(txs []*Transaction) *Block {
+	return NewBlock(txs,1,[]byte{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0})
 }
 
 
 /*
 	新建区块
 */
-func NewBlock(data string,height int64,prevblockhash []byte) *Block {
-	block := &Block{height,prevblockhash,[]byte(data),time.Now().Unix(),nil,0}
+func NewBlock(txs []*Transaction,height int64,prevblockhash []byte) *Block {
+	block := &Block{height,prevblockhash,txs,time.Now().Unix(),nil,0}
 	//block.SetHash()
 
 	//创建工作量证明对象

@@ -19,6 +19,7 @@ func PrintUsage() {
 	fmt.Println("[!]Usage:")
 	fmt.Println("\taddblock -data DATA --交易数据")
 	fmt.Println("\tprintchain --输出区块信息")
+	fmt.Println("\tcreateblockchain --创建创世区块")
 }
 
 /*
