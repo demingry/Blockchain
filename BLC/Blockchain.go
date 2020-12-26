@@ -32,7 +32,7 @@ func (blc *Blockchain)AddNewBlockToChain(data string,height int64,prevhash []byt
 /*
 	创建带有创世区块的区块链
 */
-func CreateBlockchainWithGenesisBlock() {
+func CreateBlockchainWithGenesisBlock(tsx []*Transaction) {
 
 	//数据库是否存在
 	if dbExists() {
@@ -56,7 +56,7 @@ func CreateBlockchainWithGenesisBlock() {
 		//数据表被新建,创建创世区块
 		if b != nil {
 
-			genesisBlock := CreateGenesisBlock([]*Transaction{})
+			genesisBlock := CreateGenesisBlock(tsx)
 			//将创世区块存储到表中
 			err := b.Put(genesisBlock.Hash, genesisBlock.Serialize())
 			if err != nil {
@@ -76,7 +76,7 @@ func CreateBlockchainWithGenesisBlock() {
 /*
 	增加新区块到区块链
 */
-func (bc *Blockchain) AddBlockToBlockChain(data string) {
+func (bc *Blockchain) AddBlockToBlockChain(txs []*Transaction) {
 	err := bc.DB.Update(func(tx *bolt.Tx) error {
 		//获取数据表
 		b := tx.Bucket([]byte(blockTableName))
@@ -85,7 +85,7 @@ func (bc *Blockchain) AddBlockToBlockChain(data string) {
 		if b != nil {
 			blockBytes := b.Get(bc.Tip)                                                //获取最新区块的hash,l:hash
 			lastblock := DeserializeBlock(blockBytes)                                  //获取最新区块的反序列化信息
-			newBlock := NewBlock([]*Transaction{}, lastblock.Height+1, lastblock.Hash) //新建区块
+			newBlock := NewBlock(txs, lastblock.Height+1, lastblock.Hash) //新建区块
 			err := b.Put(newBlock.Hash, newBlock.Serialize())                          //把最新的区块通过序列化存储到表中
 			if err != nil {
 				log.Panic(err)
@@ -112,6 +112,7 @@ func (bc *Blockchain) PrintChain() {
 		fmt.Printf("Height: %d\n", block.Height)
 		fmt.Printf("PrevBlockHash: %x\n", block.PrevBlockHash)
 		fmt.Printf("Timestamp: %s\n", time.Unix(block.Timestamp, 0).Format("2006-01-02 03:04:05 PM"))
+		fmt.Printf("Transaction%v\n",block.TxS)
 		fmt.Printf("Hash: %x\n", block.Hash)
 		fmt.Printf("Nonce: %d\n", block.Nonce)
 

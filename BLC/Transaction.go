@@ -7,7 +7,7 @@ Transaction 创建分两种情况:
 */
 
 type Transaction struct {
-	TxID []byte
-	Vins []*TXInput
-	Vouts []*TXOutput
+	TxHash []byte //交易hash
+	Vins []*TXInput //输入
+	Vouts []*TXOutput //输出
 }

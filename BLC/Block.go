@@ -2,6 +2,7 @@ package BLC
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/gob"
 	"log"
 	"time"
@@ -13,7 +14,7 @@ type Block struct {
 	//上一个区块Hash
 	PrevBlockHash []byte
 	//交易数据，一个transaction代表一次交易，结构体数组表示区块链中多个transaction交易
-	TX []*Transaction
+	TxS []*Transaction
 	//时间戳
 	Timestamp int64
 	//Hash
@@ -91,4 +92,20 @@ func DeserializeBlock(blockBytes []byte) *Block {
 		log.Panic(err)
 	}
 	return &block
+}
+
+
+/*
+	将transaction转化成字节数组
+*/
+func (b *Block) HashTransaction() []byte {
+	var txHashes [][]byte
+	var txHash [32]byte
+
+	for _,tx := range b.TxS {
+		txHashes = append(txHashes,tx.TxHash)
+	}
+	txHash = sha256.Sum256(bytes.Join(txHashes,[]byte{}))
+
+	return txHash[:]
 }

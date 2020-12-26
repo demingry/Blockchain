@@ -3,8 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="7dca62e3-6bd8-4875-b41b-c082b2ad2296" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BLC/Block.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/Block.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BLC/Blockchain.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/Blockchain.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BLC/Transaction_TXOutput.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/Transaction_TXOutput.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BLC/CLI.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/CLI.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BLC/ProofofWork.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/ProofofWork.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BLC/Transaction.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/Transaction.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,10 +63,18 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed" />
+  </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
+    <state x="306" y="122" width="968" height="607" key="CommitChangelistDialog2" timestamp="1608953679419">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="306" y="122" width="968" height="607" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1608953679419" />
     <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1608730569502">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -104,9 +115,13 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="90" y="113" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1608563871754" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1608820714793">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1608953684602">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1608820714793" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1608953684602" />
+    <state x="798" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1608992938046">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="798" y="257" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1608992938046" />
   </component>
 </project>

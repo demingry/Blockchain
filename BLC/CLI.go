@@ -69,7 +69,7 @@ func (cli *CLI) Run()  {
 			fmt.Println("[!]无法获取数据库，请检查！")
 			os.Exit(1)
 		}
-		blockChainObject.AddBlockToBlockChain(CreateRandomString(6))
+		blockChainObject.AddBlockToBlockChain([]*Transaction{})
 		defer blockChainObject.DB.Close()
 	}
 
@@ -88,7 +88,7 @@ func (cli *CLI) Run()  {
 			PrintUsage()
 			os.Exit(1)
 		}
-		CreateBlockchainWithGenesisBlock()
+		CreateBlockchainWithGenesisBlock([]*Transaction{})
 	}
 }
 

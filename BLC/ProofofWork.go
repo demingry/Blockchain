@@ -21,7 +21,7 @@ func (p *ProofofWork)PrepareData(nounce int) []byte {
 	data := bytes.Join(
 		[][]byte{
 			p.Block.PrevBlockHash,
-			p.Block.Data,
+			p.Block.HashTransaction(),
 			IntToHex(int64(p.Block.Height)),
 			IntToHex(p.Block.Timestamp),
 			IntToHex(int64(targetBit)),
