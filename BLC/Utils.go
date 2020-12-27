@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/rand"
 	"encoding/binary"
+	"encoding/json"
 	"log"
 	"math/big"
 )
@@ -34,4 +35,16 @@ func CreateRandomString(len int) string  {
 		container += string(str[randomInt.Int64()])
 	}
 	return container
+}
+
+
+/*
+	Json转数组[]string
+*/
+func JSONToArray (jsonString string) [] string{
+	var sArr [] string
+	if err := json.Unmarshal([]byte(jsonString),&sArr);err != nil{
+		log.Panic(err)
+	}
+	return sArr
 }

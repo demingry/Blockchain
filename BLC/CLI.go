@@ -17,7 +17,7 @@ type CLI struct {
 */
 func PrintUsage() {
 	fmt.Println("[!]Usage:")
-	fmt.Println("\taddblock -data DATA --交易数据")
+	fmt.Println("\taddblock -addr DATA --交易数据")
 	fmt.Println("\tprintchain --输出区块信息")
 	fmt.Println("\tcreateblockchain --创建创世区块")
 }
@@ -36,7 +36,7 @@ func (cli *CLI) Run()  {
 
 	//设置标签后的参数
 	flagAddBlockData := addBlockCmd.String("data","georgedeming","block data")
-	flagCreateBlockChainData := createBlockChainCmd.String("data","Genesis block data..","创世区块交易数据")
+	flagCreateBlockChainAddr := createBlockChainCmd.String("addr","Genesis block data..","创世区块交易数据")
 
 	switch os.Args[1] {
 	case "addblock": //添加区块
@@ -84,11 +84,11 @@ func (cli *CLI) Run()  {
 	}
 
 	if createBlockChainCmd.Parsed(){
-		if *flagCreateBlockChainData == ""{
+		if *flagCreateBlockChainAddr == ""{
 			PrintUsage()
 			os.Exit(1)
 		}
-		CreateBlockchainWithGenesisBlock([]*Transaction{})
+		CreateBlockchainWithGenesisBlock(*flagCreateBlockChainAddr)
 	}
 }
 

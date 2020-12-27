@@ -1,7 +1,7 @@
 package BLC
 
 type TXInput struct {
-	TxID []byte
+	TxID []byte //交易ID
 	Vout int
 	ScriptSiq string
 }
