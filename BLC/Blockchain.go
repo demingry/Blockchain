@@ -36,7 +36,7 @@ func (blc *Blockchain)AddNewBlockToChain(data string,height int64,prevhash []byt
 func CreateBlockchainWithGenesisBlock(addr string) {
 
 	//数据库是否存在
-	if dbExists() {
+	if DbExists() {
 		fmt.Println("数据库已存在")
 		return
 	}
@@ -143,7 +143,7 @@ func (bc *Blockchain) PrintChain() {
 /*
 	判断数据库是否存在
 */
-func dbExists() bool {
+func DbExists() bool {
 	if _, err := os.Stat(dbName); os.IsNotExist(err) {
 		return false
 	}
@@ -155,7 +155,7 @@ func dbExists() bool {
 */
 func GetBlockchainObject() *Blockchain {
 
-	if !dbExists() {
+	if !DbExists() {
 		fmt.Println("数据库不存在，无法获取区块链")
 		return nil
 	}

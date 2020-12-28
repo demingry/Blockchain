@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"blockchain/BLC/CLIex"
 )
 
 
@@ -33,11 +34,20 @@ func (cli *CLI) Run()  {
 	addBlockCmd := flag.NewFlagSet("addblock",flag.ExitOnError)
 	printChainCmd := flag.NewFlagSet("printchain",flag.ExitOnError)
 	createBlockChainCmd:=flag.NewFlagSet("createblockchain",flag.ExitOnError)
+	getBalanceCmd := flag.NewFlagSet("getbalance",flag.ExitOnError)
+	sendBlockCmd := flag.NewFlagSet("send",flag.ExitOnError)
 
 	//设置标签后的参数
 	flagAddBlockData := addBlockCmd.String("data","georgedeming","block data")
 	flagCreateBlockChainAddr := createBlockChainCmd.String("addr","Genesis block data..","创世区块交易数据")
+	flagFromData := sendBlockCmd.String("from","","转账源地址")
+	flagToData := sendBlockCmd.String("to","","转账目的地址")
+	flagAmountData := sendBlockCmd.String("amount","","转账金额")
+	flagGetBalanceData := getBalanceCmd.String("addr","","查询账户余额")
 
+	/*
+		解析:CLI命令失误退出
+	*/
 	switch os.Args[1] {
 	case "addblock": //添加区块
 		err := addBlockCmd.Parse(os.Args[2:])
@@ -54,6 +64,17 @@ func (cli *CLI) Run()  {
 		if err != nil{
 			log.Panic(err)
 		}
+	case "send":
+		err := sendBlockCmd.Parse(os.Args[2:])
+		if err != nil {
+			os.Exit(1)
+		}
+	case "getbalance":
+		err := getBalanceCmd.Parse(os.Args[2:])
+		if  err != nil {
+			os.Exit(1)
+		}
+
 	default:
 		PrintUsage()
 		os.Exit(1)
@@ -64,23 +85,11 @@ func (cli *CLI) Run()  {
 			PrintUsage()
 			os.Exit(1)
 		}
-		blockChainObject := GetBlockchainObject()
-		if blockChainObject == nil{
-			fmt.Println("[!]无法获取数据库，请检查！")
-			os.Exit(1)
-		}
-		blockChainObject.AddBlockToBlockChain([]*Transaction{})
-		defer blockChainObject.DB.Close()
+		CLIex.AddBlock_Cmd()
 	}
 
 	if printChainCmd.Parsed() {
-		blockChainObject := GetBlockchainObject()
-		if blockChainObject == nil{
-			fmt.Println("[!]无法获取数据库，请检查！")
-			os.Exit(1)
-		}
-		blockChainObject.PrintChain()
-		defer blockChainObject.DB.Close()
+		CLIex.PrintChain_Cmd()
 	}
 
 	if createBlockChainCmd.Parsed(){
@@ -89,6 +98,27 @@ func (cli *CLI) Run()  {
 			os.Exit(1)
 		}
 		CreateBlockchainWithGenesisBlock(*flagCreateBlockChainAddr)
+	}
+
+	if sendBlockCmd.Parsed(){
+		if *flagFromData == "" || *flagToData =="" ||*flagAmountData == "" {
+			PrintUsage()
+			os.Exit(1)
+		}
+		from:=JSONToArray(*flagFromData)
+		to:=JSONToArray(*flagToData)
+		amount:=JSONToArray(*flagAmountData)
+
+		CLIex.SendBlock_Cmd(from,to,amount)
+	}
+
+	if getBalanceCmd.Parsed(){
+		if *flagGetBalanceData == ""{
+			fmt.Println("查询地址不能为空")
+			PrintUsage()
+			os.Exit(1)
+		}
+		CLIex.GetBalance_Cmd(*flagGetBalanceData)
 	}
 }
 

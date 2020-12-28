@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/gob"
+	"encoding/hex"
 	"log"
 	"time"
 )
@@ -27,6 +28,10 @@ type UTXO struct {
 	Output *TXOutput //
 }
 
+
+/*
+	创世区块的Transaction
+*/
 func NewCoinBaseTransaction(addr string) *Transaction {
 	txInput := &TXInput{[]byte{},-1,"Genesis block"}
 	txOutput := &TXOutput{10,addr}
@@ -35,6 +40,46 @@ func NewCoinBaseTransaction(addr string) *Transaction {
 	txCoinBase.SetTxID()
 	return txCoinBase
 }
+
+
+
+/*
+	新区快的Transaction
+*/
+func NewSimpleTransaction(from,to string,amount int64,bc *Blockchain,txs []*Transaction)*Transaction{
+	var txInputs [] *TXInput
+	var txOutputs [] *TXOutput
+
+	balance, spendableUTXO := bc.FindSpendableUTXOs(from,amount,txs)
+
+
+	//代表消费
+	for txID,indexArray:=range spendableUTXO{
+		txIDBytes,_:=hex.DecodeString(txID)
+		for _,index:=range indexArray{
+			txInput := &TXInput{txIDBytes,index,from}
+			txInputs = append(txInputs,txInput)
+		}
+	}
+
+	//转账
+	txOutput1 := &TXOutput{amount, to}
+	txOutputs = append(txOutputs, txOutput1)
+
+	//找零
+
+	txOutput2 := &TXOutput{balance - amount, from}
+
+
+	txOutputs = append(txOutputs, txOutput2)
+
+	tx := &Transaction{[]byte{}, txInputs, txOutputs}
+	//设置hash值
+	tx.SetTxID()
+	return tx
+}
+
+
 
 func (tx *Transaction) SetTxID()  {
 	var buff bytes.Buffer
@@ -50,7 +95,12 @@ func (tx *Transaction) SetTxID()  {
 	tx.TxHash = hash[:]
 }
 
+
+
+/*
+	判断是否创世区块Transaction
+*/
 func (tx *Transaction) IsCoinbaseTransaction() bool {
 
-	return false
+	return len(tx.Vins[0].TxID) == 0 && tx.Vins[0].Vout == -1
 }
