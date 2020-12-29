@@ -183,7 +183,7 @@ func GetBlockchainObject() *Blockchain {
 
 
 //找到所有未花费的交易输出
-func (bc *Blockchain) UnUTXOs(address string, txs []*Transaction) []*UTXO {
+func (bc *Blockchain) UnUTXOs(addr string, txs []*Transaction) []*UTXO {
 	/*
 	   1.先遍历未打包的交易(参数txs)，找出未花费的Output。
 	   2.遍历数据库，获取每个块中的Transaction，找出未花费的Output。
@@ -194,7 +194,7 @@ func (bc *Blockchain) UnUTXOs(address string, txs []*Transaction) []*UTXO {
 	//1.添加先从txs遍历，查找未花费
 	//for i, tx := range txs {
 	for i:=len(txs)-1;i>=0;i--{
-		unUTXOs = caculate(txs[i], address, spentTxOutputs, unUTXOs)
+		unUTXOs = caculate(txs[i], addr, spentTxOutputs, unUTXOs)
 	}
 
 	bcIterator := bc.Iterator()
@@ -203,7 +203,7 @@ func (bc *Blockchain) UnUTXOs(address string, txs []*Transaction) []*UTXO {
 		//统计未花费
 		//2.获取block中的每个Transaction
 		for i := len(block.TxS) - 1; i >= 0; i-- {
-			unUTXOs = caculate(block.TxS[i], address, spentTxOutputs, unUTXOs)
+			unUTXOs = caculate(block.TxS[i], addr, spentTxOutputs, unUTXOs)
 		}
 
 		//结束迭代
@@ -239,7 +239,6 @@ func (bc *Blockchain) FindSpendableUTXOs(from string, amount int64, txs []*Trans
 
 	var balance int64
 	utxos := bc.UnUTXOs(from, txs)
-	//fmt.Println(from,utxos)
 	spendableUTXO := make(map[string][]int)
 	for _, utxo := range utxos {
 		balance += utxo.Output.Value
@@ -257,12 +256,12 @@ func (bc *Blockchain) FindSpendableUTXOs(from string, amount int64, txs []*Trans
 }
 
 
-func caculate(tx *Transaction, address string, spentTxOutputs map[string][]int, unUTXOs []*UTXO) []*UTXO {
+func caculate(tx *Transaction, addr string, spentTxOutputs map[string][]int, unUTXOs []*UTXO) []*UTXO {
 	//2.先遍历TxInputs，表示花费
 	if !tx.IsCoinbaseTransaction() {
 		for _, in := range tx.Vins {
 			//如果解锁
-			if in.UnLockWithAddress(address) {
+			if in.UnLockWithAddress(addr) {
 				key := hex.EncodeToString(in.TxID)
 				spentTxOutputs[key] = append(spentTxOutputs[key], in.Vout)
 			}
@@ -271,7 +270,7 @@ func caculate(tx *Transaction, address string, spentTxOutputs map[string][]int, 
 
 outputs:
 	for index, out := range tx.Vouts {
-		if out.UnLockWithAddress(address) {
+		if out.UnLockWithAddress(addr) {
 			if len(spentTxOutputs) != 0 {
 				var isSpentUTXO bool
 
@@ -295,4 +294,10 @@ outputs:
 		}
 	}
 	return unUTXOs
+}
+
+func (bc *Blockchain)MineNewBlock(from, to, amount [] string) {
+	fmt.Println(from,"\n")
+	fmt.Println(to,"\n")
+	fmt.Println(amount,"\n")
 }

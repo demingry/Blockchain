@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"blockchain/BLC/CLIex"
 )
 
 
@@ -85,11 +84,11 @@ func (cli *CLI) Run()  {
 			PrintUsage()
 			os.Exit(1)
 		}
-		CLIex.AddBlock_Cmd()
+		AddBlock_Cmd()
 	}
 
 	if printChainCmd.Parsed() {
-		CLIex.PrintChain_Cmd()
+		PrintChain_Cmd()
 	}
 
 	if createBlockChainCmd.Parsed(){
@@ -109,7 +108,7 @@ func (cli *CLI) Run()  {
 		to:=JSONToArray(*flagToData)
 		amount:=JSONToArray(*flagAmountData)
 
-		CLIex.SendBlock_Cmd(from,to,amount)
+		SendBlock_Cmd(from,to,amount)
 	}
 
 	if getBalanceCmd.Parsed(){
@@ -118,7 +117,7 @@ func (cli *CLI) Run()  {
 			PrintUsage()
 			os.Exit(1)
 		}
-		CLIex.GetBalance_Cmd(*flagGetBalanceData)
+		GetBalance_Cmd(*flagGetBalanceData)
 	}
 }
 

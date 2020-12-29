@@ -1,17 +1,16 @@
-package CLIex
+package BLC
 
 import (
 	"fmt"
 	"os"
-	"blockchain/BLC"
 )
 
-func AddBlock_Cmd() {
-	blockChainObject := BLC.GetBlockchainObject()
+func PrintChain_Cmd()  {
+	blockChainObject := GetBlockchainObject()
 	if blockChainObject == nil{
 		fmt.Println("[!]无法获取数据库，请检查！")
 		os.Exit(1)
 	}
-	blockChainObject.AddBlockToBlockChain([]*BLC.Transaction{})
+	blockChainObject.PrintChain()
 	defer blockChainObject.DB.Close()
 }
