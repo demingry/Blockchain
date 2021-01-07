@@ -2,13 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7dca62e3-6bd8-4875-b41b-c082b2ad2296" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/BLC/UTXO.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BLC/AddBlockCmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/IAddBlockCmd.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BLC/Blockchain.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/Blockchain.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BLC/CLI.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/CLI.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BLC/CLIex/AddBlockCmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/AddBlockCmd.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BLC/CLIex/GetBalanceCmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/GetBalanceCmd.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BLC/CLIex/PrintChainCmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/PrintChainCmd.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BLC/CLIex/SendBlockCmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/SendBlockCmd.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BLC/GetBalanceCmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/IGetBalanceCmd.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BLC/PrintChainCmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/IPrintChainCmd.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BLC/SendBlockCmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/ISendBlockCmd.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BLC/Transaction.go" beforeDir="false" afterPath="$PROJECT_DIR$/BLC/Transaction.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +37,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="hsqldb" />
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -51,20 +53,16 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="go build blockchain" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="go build blockchain" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
       <module name="blockchain" />
       <working_directory value="$PROJECT_DIR$" />
+      <parameters value="send -from '[&quot;zhang&quot;,&quot;wang&quot;]' -to '[&quot;ni&quot;,&quot;ta&quot;]' -amount '[&quot;20&quot;,&quot;30&quot;]'" />
       <kind value="PACKAGE" />
       <filePath value="$PROJECT_DIR$/main.go" />
       <package value="blockchain" />
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Go Build.go build blockchain" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
@@ -78,6 +76,10 @@
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
+    <state x="212" y="60" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1609235380901">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="212" y="60" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1609235380901" />
     <state x="306" y="122" width="968" height="607" key="CommitChangelistDialog2" timestamp="1608953679419">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -86,38 +88,38 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1609133050498" />
-    <state width="1493" height="261" key="GridCell.Tab.0.bottom" timestamp="1608795868152">
+    <state width="1493" height="88" key="GridCell.Tab.0.bottom" timestamp="1609236894356">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1608795868152" />
-    <state width="1493" height="261" key="GridCell.Tab.0.center" timestamp="1608795868152">
+    <state width="1493" height="88" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1609236894356" />
+    <state width="1493" height="88" key="GridCell.Tab.0.center" timestamp="1609236894355">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1608795868152" />
-    <state width="1493" height="261" key="GridCell.Tab.0.left" timestamp="1608795868152">
+    <state width="1493" height="88" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1609236894355" />
+    <state width="1493" height="88" key="GridCell.Tab.0.left" timestamp="1609236894355">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1608795868152" />
-    <state width="1493" height="261" key="GridCell.Tab.0.right" timestamp="1608795868152">
+    <state width="1493" height="88" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1609236894355" />
+    <state width="1493" height="88" key="GridCell.Tab.0.right" timestamp="1609236894355">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1608795868152" />
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1608795868152">
+    <state width="1493" height="88" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1609236894355" />
+    <state width="1493" height="253" key="GridCell.Tab.1.bottom" timestamp="1609236894354">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1608795868152" />
-    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1608795868152">
+    <state width="1493" height="253" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1609236894354" />
+    <state width="1493" height="253" key="GridCell.Tab.1.center" timestamp="1609236894354">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1608795868152" />
-    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1608795868152">
+    <state width="1493" height="253" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1609236894354" />
+    <state width="1493" height="253" key="GridCell.Tab.1.left" timestamp="1609236894354">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1608795868152" />
-    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1608795868152">
+    <state width="1493" height="253" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1609236894354" />
+    <state width="1493" height="253" key="GridCell.Tab.1.right" timestamp="1609236894354">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1608795868152" />
+    <state width="1493" height="253" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1609236894354" />
     <state x="329" y="73" width="996" height="707" key="SettingsEditor" timestamp="1608994825326">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -126,9 +128,24 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1608953684602" />
-    <state x="798" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1609213869387">
+    <state x="311" y="141" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1609233411590">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="798" y="257" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1609213869387" />
+    <state x="311" y="141" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824@0.0.1536.824" timestamp="1609233411590" />
+    <state x="798" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1609235343014">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="798" y="257" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1609235343014" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/main.go</url>
+          <line>14</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -22,11 +22,6 @@ type Transaction struct {
 }
 
 
-type UTXO struct {
-	TxID   [] byte  //当前Transaction的交易ID
-	Index  int      //下标索引
-	Output *TXOutput //
-}
 
 
 /*
@@ -44,7 +39,7 @@ func NewCoinBaseTransaction(addr string) *Transaction {
 
 
 /*
-	新区快的Transaction
+	新建交易
 */
 func NewSimpleTransaction(from,to string,amount int64,bc *Blockchain,txs []*Transaction)*Transaction{
 	var txInputs [] *TXInput
